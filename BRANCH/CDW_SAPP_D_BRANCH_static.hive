@@ -1,0 +1,20 @@
+drop table CDW_SAPP_D_BRANCH;
+drop table CDW_SAPP_D_BRANCH_static;
+
+create external table CDW_SAPP_D_BRANCH_static
+(BRANCH_CODE string, 
+ BRANCH_NAME string,
+ BRANCH_STREET string,
+ BRANCH_CITY string,
+ BRANCH_STATE string,
+ BRANCH_ZIP string,
+ BRANCH_PHONE string,
+ LAST_UPDATED timestamp)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+ESCAPED BY '"' LINES TERMINATED BY '\n'
+stored as textfile
+location "/user/maria_dev/CREDIT_CARD_OOZIE_STATIC/BRANCH ";
+
+load data inpath "/user/maria_dev/CREDIT_CARD_SYSTEM/CDW_SAPP_BRANCH/"
+overwrite into table CDW_SAPP_D_BRANCH_static;
+

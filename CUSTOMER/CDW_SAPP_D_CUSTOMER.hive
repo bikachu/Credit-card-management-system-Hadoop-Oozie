@@ -1,0 +1,22 @@
+SET hive.exec.dynamic.partition=true;
+SET hive.exec.dynamic.partition.mode=nonstrict;
+
+create table CDW_SAPP_D_CUSTOMER
+(CUST_F_NAME string,
+ CUST_M_NAME string,
+ CUST_L_NAME string,
+ CUST_SSN string,
+ CUST_CC_NO string,
+ CUST_STREET string,
+ CUST_CITY string,
+ CUST_COUNTRY string,
+ CUST_ZIP string,
+ CUST_PHONE string,
+ CUST_EMAIL string,
+ LAST_UPDATED timestamp)
+
+partitioned by (CUST_STATE string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+ESCAPED BY '"' LINES TERMINATED BY '\n'
+stored as textfile
+location '/user/maria_dev/CREDIT_CARD_OOZIE_DYNAMIC/CDW_SAPP_CUSTOMER';

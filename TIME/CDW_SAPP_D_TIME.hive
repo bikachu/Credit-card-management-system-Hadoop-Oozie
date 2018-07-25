@@ -1,0 +1,14 @@
+SET hive.exec.dynamic.partition=true;
+SET hive.exec.dynamic.partition.mode=nonstrict;
+
+create table CDW_SAPP_D_TIME
+(TIMEID string,
+ DAY string,
+ MONTH string,
+ YEAR string)
+partitioned by (QUARTER string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+ESCAPED BY '"' LINES TERMINATED BY '\n'
+stored as textfile
+location "/user/maria_dev/CREDIT_CARD_OOZIE_DYNAMIC/CDW_SAPP_TIME";
+

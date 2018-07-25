@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="CUSTOMER">
+    <start to="CUSTOMER_sqoop"/>
+
+    <action name="CUSTOMER_sqoop">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+            </configuration>
+            <command>job --meta-connect jdbc:hsqldb:hsql://localhost:16000/sqoop --exec CustomerJob</command>      
+        <archive>/user/maria_dev/lib/java-json.jar#java-json.jar</archive>
+        </sqoop>
+        <ok to="CDW_SAPP_D_CUSTOMER_static"/>
+        <error to="fail"/>
+    </action>
+        <kill name="fail">
+             <message> Workflow failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+        </kill>
+
+   
+
+    <action name = "CDW_SAPP_D_CUSTOMER_static">
+      <hive xmlns = "uri:oozie:hive-action:0.4">
+         <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+         <script>${nameNode}/user/maria_dev/CREDIT_CARD_OOZIE_FILES/CUSTOMER/CDW_SAPP_D_CUSTOMER_static.hive</script>
+      </hive>
+        
+      <ok to = "CDW_SAPP_D_CUSTOMER" />
+      <error to = "kill_job" />
+   </action>
+
+   <action name = "CDW_SAPP_D_CUSTOMER">
+      <hive xmlns = "uri:oozie:hive-action:0.4">
+        <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+
+         <script>${nameNode}/user/maria_dev/CREDIT_CARD_OOZIE_FILES/CUSTOMER/CDW_SAPP_D_CUSTOMER.hive</script>
+      </hive>
+        
+      <ok to = "Insert_into_CUSTOMER_Table" />
+      <error to = "kill_job" />
+   </action>
+
+   <action name = "Insert_into_CUSTOMER_Table">
+      <hive xmlns = "uri:oozie:hive-action:0.4">
+         <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+
+         <script>${nameNode}/user/maria_dev/CREDIT_CARD_OOZIE_FILES/CUSTOMER/CUSTOMER_copydata.hql</script>
+        
+      </hive>
+        
+      <ok to = "end" />
+      <error to = "kill_job" />
+   </action>
+   
+   <kill name = "kill_job">
+      <message>Job failed</message>
+   </kill>
+  
+   <end name = "end" />
+</workflow-app>

@@ -1,0 +1,15 @@
+SET hive.exec.dynamic.partition=true;
+SET hive.exec.dynamic.partition.mode=nonstrict;
+
+create table CDW_SAPP_D_CREDIT_CARD
+(CUST_CC_NO string, 
+ TIMEID string,
+ CUST_SSN string,
+ BRANCH_CODE string,
+ TRANSACTION_VALUE string,
+ TRANSACTION_ID string)
+partitioned by (TRANSACTION_TYPE string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+ESCAPED BY '"' LINES TERMINATED BY '\n'
+stored as textfile
+location "/user/maria_dev/CREDIT_CARD_OOZIE_DYNAMIC/CDW_SAPP_CREDIT_CARD";

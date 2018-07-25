@@ -1,0 +1,18 @@
+drop table CDW_SAPP_D_CREDIT_CARD;
+drop table CDW_SAPP_D_CREDIT_CARD_static;
+
+create external table CDW_SAPP_D_CREDIT_CARD_static
+(CUST_CC_NO string, 
+ TIMEID string,
+ CUST_SSN string,
+ BRANCH_CODE string,
+ TRANSACTION_TYPE string,
+ TRANSACTION_VALUE string,
+ TRANSACTION_ID string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+ESCAPED BY '"' LINES TERMINATED BY '\n'
+stored as textfile
+location " /user/maria_dev/CREDIT_CARD_OOZIE_STATIC/CREDITCARD ";
+
+load data inpath "/user/maria_dev/CREDIT_CARD_SYSTEM/CDW_SAPP_CREDITCARD/"
+overwrite into table CDW_SAPP_D_CREDIT_CARD_static;
