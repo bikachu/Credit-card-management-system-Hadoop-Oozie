@@ -6,6 +6,10 @@ Ooize will automate the jobs completed by Sqoop and Hive:
  - Create table in Hive
  - update and run at set frequency
  
+ --------------------
+ Before running oozie job:
+  -create sqoop jobs
+ 
 -------------------
 Each folder contains six files:
 1. static table:
