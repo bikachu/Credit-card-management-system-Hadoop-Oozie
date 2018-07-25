@@ -8,24 +8,30 @@ Ooize will automate the jobs completed by Sqoop and Hive:
  
 -------------------
 Each folder contains six files:
-1. static table 
+1. static table:
+
    This file contain the Hive query to build a static table in HIVE.
    
    
-2. Dynamic table 
+2. Dynamic table:
+
    This file contain the Hive query to build a dynamic partitioned table from static stable.
 
 
-3. workflow
+3. workflow:
+
    This file contains the jobs information for sqoop job. hive tables etc.
    
-4. copydata
+4. copydata:
+
    This is the insert statement to load the data from static table to dynamic table.
    
-5. coordinator
+5. coordinator:
+
    This is the file to set the update frequency and running time.
    
-6. job.properties
+6. job.properties:
+
    This is the configration for the whole task.
    
    
