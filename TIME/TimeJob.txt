@@ -1,0 +1,21 @@
+sqoop job 
+-Dorg.apache.sqoop.splitter.allow_text_splitter=true
+--meta-connect jdbc:hsqldb:hsql://localhost:16000/sqoop 
+--create TimeJob
+-- import 
+--connect jdbc:mysql://localhost/JDBC 
+--driver com.mysql.jdbc.Driver 
+--query  
+" SELECT  CONCAT(YEAR, LPAD(MONTH,2,'0'), LPAD(DAY,2,'0')),
+                  DAY,
+                  MONTH,
+                  (CASE WHEN MONTH<=3 AND MONTH >0 THEN 'QUARTER1'
+			            WHEN MONTH>3 AND MONTH<=6 THEN 'QUARTER2' 
+			            WHEN MONTH>6 AND MONTH<=9 THEN 'QUARTER3' 
+			            WHEN MONTH>9 AND MONTH<=12 THEN 'QUARTER4'
+		           END),
+                   YEAR
+          FROM CDW_SAPP_CREDITCARD WHERE \$CONDITIONS "  
+--split-by DAY
+--target-dir /user/maria_dev/CREDIT_CARD_SYSTEM/CDW_SAPP_TIME/
+--fields-terminated-by ','
